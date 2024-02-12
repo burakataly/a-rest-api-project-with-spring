@@ -3,6 +3,7 @@ package com.burak.questApp.services;
 import com.burak.questApp.entities.User;
 import com.burak.questApp.repository.IUserRepository;
 import com.burak.questApp.requests.UserRequest;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,7 +24,9 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public User createUser(UserRequest userRequest) {
-        User user = new User();
+        User user = userRepository.findByUsername(userRequest.getUsername());
+        if(user != null) return null;
+        user = new User();
         user.setUsername(userRequest.getUsername());
         user.setPassword(userRequest.getPassword());
         return userRepository.save(user);
@@ -31,8 +34,14 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public User getUserById(Long userId) {
-        return userRepository.findById(userId).orElse(null);
+        return userRepository.findById(userId).orElseThrow(EntityNotFoundException::new);
     }
+
+    @Override
+    public User getUserByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
 
     @Override
     public User updateUser(Long userId, UserRequest userRequest) {
