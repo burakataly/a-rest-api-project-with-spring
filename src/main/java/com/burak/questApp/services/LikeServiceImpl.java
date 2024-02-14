@@ -9,6 +9,7 @@ import com.burak.questApp.responses.LikeResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -43,9 +44,11 @@ public class LikeServiceImpl implements ILikeService {
         User user = userService.getUserById(likeCreateRequest.getUserId());
         Post post = postService.getPostById(likeCreateRequest.getPostId());
         if(user == null || post == null) return null;
-        Like like = new Like();
-        like.setPost(post);
-        like.setUser(user);
+        Like like = Like.builder().
+                user(user).
+                post(post).
+                date(new Date()).
+                build();
         return likeRepository.save(like);
     }
 

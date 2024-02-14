@@ -1,5 +1,6 @@
 package com.burak.questApp.services;
 
+import com.burak.questApp.entities.Comment;
 import com.burak.questApp.entities.User;
 import com.burak.questApp.requests.UserRequest;
 import com.burak.questApp.responses.UserResponse;
