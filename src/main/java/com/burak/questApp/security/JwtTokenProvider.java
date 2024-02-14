@@ -15,17 +15,17 @@ import java.util.Map;
 
 @Component
 public class JwtTokenProvider {
-    @Value("${jwt-key}")
+    @Value("${jwt.key}")
     private String SECRET;
-    @Value("${expires-in}")
+    @Value("${expires.in}")
     private Long EXPIRES_IN;
 
     public String generateToken(String username){
         Map<String, Object> claims = new HashMap<>();
-        Date expireDate = new Date(new Date().getTime() + EXPIRES_IN);
+        Date expireDate = new Date(System.currentTimeMillis() + (EXPIRES_IN * 1000L));
          return Jwts.builder().
                 setClaims(claims).setSubject(username).
-                setIssuedAt(new Date()).
+                setIssuedAt(new Date(System.currentTimeMillis())).
                 setExpiration(expireDate).
                  signWith(getSignKey(), SignatureAlgorithm.HS256).compact();
     }

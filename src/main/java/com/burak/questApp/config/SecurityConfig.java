@@ -6,6 +6,7 @@ import com.burak.questApp.security.JwtTokenProvider;
 import com.burak.questApp.services.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.ProviderManager;
@@ -30,10 +31,13 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class SecurityConfig {
     private JwtAuthenticationFilter jwtAuthenticationFilter;
     private UserDetailsServiceImpl userService;
+    private JwtAuthenticationEntryPoint authenticationEntryPoint;
 
-    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, UserDetailsServiceImpl userService) {
+    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, UserDetailsServiceImpl userService,
+                          JwtAuthenticationEntryPoint authenticationEntryPoint) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.userService = userService;
+        this.authenticationEntryPoint = authenticationEntryPoint;
     }
 
     @Bean
@@ -78,9 +82,12 @@ public class SecurityConfig {
                 exceptionHandling(Customizer.withDefaults()).
                 sessionManagement(x -> x.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).
                 authorizeHttpRequests(x ->
-                        x.requestMatchers("/posts/**", "/comments/**", "/auth/**").permitAll().
+                        x.requestMatchers(HttpMethod.GET,"/posts").permitAll().
+                                requestMatchers(HttpMethod.GET, "/comments").permitAll().
+                                requestMatchers("/auth/**").permitAll().
                                 anyRequest().authenticated()
-                ).
+                ).exceptionHandling(exception -> exception.authenticationEntryPoint(authenticationEntryPoint)).
+                authenticationProvider(authenticationProvider()).
                 addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class).
                 build();
     }

@@ -3,9 +3,11 @@ package com.burak.questApp.services;
 import com.burak.questApp.entities.User;
 import com.burak.questApp.repository.IUserRepository;
 import com.burak.questApp.requests.UserRequest;
+import com.burak.questApp.responses.UserResponse;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,17 +20,23 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<UserResponse> getAllUsers() {
+        List<User> users = userRepository.findAll();
+        List<UserResponse> responses = new ArrayList<>();
+        for(User user : users){
+            responses.add(new UserResponse(user));
+        }
+        return responses;
     }
 
     @Override
     public User createUser(UserRequest userRequest) {
         User user = userRepository.findByUsername(userRequest.getUsername());
         if(user != null) return null;
-        user = new User();
-        user.setUsername(userRequest.getUsername());
-        user.setPassword(userRequest.getPassword());
+        user = User.builder().
+                username(userRequest.getUsername()).
+                password(userRequest.getPassword()).
+                build();
         return userRepository.save(user);
     }
 
@@ -58,5 +66,10 @@ public class UserServiceImpl implements IUserService {
     @Override
     public void deleteUser(Long userId) {
         userRepository.deleteById(userId);
+    }
+
+    @Override
+    public List<Object> getUserActivity(Long userId) {
+        return null;
     }
 }

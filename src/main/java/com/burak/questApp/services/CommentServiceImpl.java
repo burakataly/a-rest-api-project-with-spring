@@ -8,6 +8,7 @@ import com.burak.questApp.requests.CommentCreateRequest;
 import com.burak.questApp.requests.CommentUpdateRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,10 +40,12 @@ public class CommentServiceImpl implements ICommentService {
         User user = userService.getUserById(commentCreateRequest.getUserId());
         Post post = postService.getPostById(commentCreateRequest.getPostId());
         if(user == null || post == null) return null;
-        Comment comment = new Comment();
-        comment.setUser(user);
-        comment.setPost(post);
-        comment.setText(commentCreateRequest.getText());
+        Comment comment = Comment.builder().
+                user(user).
+                post(post).
+                text(commentCreateRequest.getText()).
+                date(new Date()).
+                build();
         return commentRepository.save(comment);
     }
 

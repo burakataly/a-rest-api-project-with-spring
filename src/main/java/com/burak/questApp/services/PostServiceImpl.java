@@ -9,6 +9,7 @@ import com.burak.questApp.responses.PostResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,10 +50,12 @@ public class PostServiceImpl implements IPostService {
     public Post createPost(PostCreateRequest postCreateRequest) {
         User user = userService.getUserById(postCreateRequest.getUserId());
         if(user == null) return null;
-        Post post = new Post();
-        post.setText(postCreateRequest.getText());
-        post.setTitle(postCreateRequest.getTitle());
-        post.setUser(user);
+        Post post = Post.builder().
+                text(postCreateRequest.getText()).
+                title(postCreateRequest.getTitle()).
+                user(user).
+                date(new Date())
+                .build();
         return postRepository.save(post);
     }
 

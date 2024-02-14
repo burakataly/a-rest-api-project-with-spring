@@ -1,6 +1,7 @@
 package com.burak.questApp.services;
 
 import com.burak.questApp.requests.UserRequest;
+import com.burak.questApp.responses.AuthResponse;
 import com.burak.questApp.security.JwtTokenProvider;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,21 +27,28 @@ public class AuthService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public String login(UserRequest userRequest) {
-
+    public AuthResponse login(UserRequest userRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(userRequest.getUsername(), userRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        System.out.println("BURDAAAAAAAAA");
-        return jwtTokenProvider.generateToken(userRequest.getUsername());
+        AuthResponse authResponse = new AuthResponse();
+        authResponse.setMessage("Bearer " + jwtTokenProvider.generateToken(userRequest.getUsername()));
+        authResponse.setUserId(userService.getUserByUsername(userRequest.getUsername()).getId());
+        return authResponse;
     }
 
-    public ResponseEntity<String> register(UserRequest userRequest){
+    public ResponseEntity<AuthResponse> register(UserRequest userRequest){
         if(userService.getUserByUsername(userRequest.getUsername()) == null){
             userRequest.setPassword(passwordEncoder.encode(userRequest.getPassword()));
             userService.createUser(userRequest);
-            return new ResponseEntity<>("user is successfully added", HttpStatus.CREATED);
+            AuthResponse authResponse = new AuthResponse();
+            authResponse.setMessage("user is successfully added");
+            return new ResponseEntity<>(authResponse, HttpStatus.CREATED);
         }
-        else return new ResponseEntity<>("there is already a user with that username.", HttpStatus.BAD_REQUEST);
+        else{
+            AuthResponse authResponse = new AuthResponse();
+            authResponse.setMessage("there is already a user with that username.");
+            return new ResponseEntity<>(authResponse, HttpStatus.BAD_REQUEST);
+        }
     }
 }

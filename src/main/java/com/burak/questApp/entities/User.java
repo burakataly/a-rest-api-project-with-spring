@@ -7,6 +7,7 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Table(name = "user")
 
 public class User {
@@ -15,4 +16,5 @@ public class User {
     private Long id;
     private String username;
     private String password;
+    private Integer avatar;
 }

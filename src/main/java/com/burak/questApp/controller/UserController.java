@@ -2,6 +2,7 @@ package com.burak.questApp.controller;
 
 import com.burak.questApp.entities.User;
 import com.burak.questApp.requests.UserRequest;
+import com.burak.questApp.responses.UserResponse;
 import com.burak.questApp.services.IUserService;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,13 +18,18 @@ public class UserController {
     }
 
     @GetMapping
-    public List<User> getAllUsers(){
+    public List<UserResponse> getAllUsers(){
         return userService.getAllUsers();
     }
 
     @GetMapping("/{userId}")
     public User getUserById(@PathVariable Long userId){
         return userService.getUserById(userId);
+    }
+
+    @GetMapping("/activity/{userId}")
+    public List<Object> getUserActivity(@PathVariable Long userId){
+        return userService.getUserActivity(userId);
     }
 
     @PostMapping
