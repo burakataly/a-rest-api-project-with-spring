@@ -1,4 +1,4 @@
-package com.burak.questApp.config;
+package com.burak.questApp.security;
 
 import com.burak.questApp.security.JwtAuthenticationEntryPoint;
 import com.burak.questApp.security.JwtAuthenticationFilter;
