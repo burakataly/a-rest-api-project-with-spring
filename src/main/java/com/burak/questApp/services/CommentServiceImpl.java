@@ -6,8 +6,10 @@ import com.burak.questApp.entities.User;
 import com.burak.questApp.repository.ICommentRepository;
 import com.burak.questApp.requests.CommentCreateRequest;
 import com.burak.questApp.requests.CommentUpdateRequest;
+import com.burak.questApp.responses.CommentResponse;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -26,8 +28,13 @@ public class CommentServiceImpl implements ICommentService {
     }
 
     @Override
-    public List<Comment> getCommentsByForeignKeys(Long userId, Long postId) {
-        return commentRepository.findByForeignKeys(userId, postId);
+    public List<CommentResponse> getCommentsByForeignKeys(Long userId, Long postId) {
+        List<Comment> comments = commentRepository.findByForeignKeys(userId, postId);
+        List<CommentResponse> responses = new ArrayList<>();
+        for(Comment comment : comments){
+            responses.add(new CommentResponse(comment));
+        }
+        return responses;
     }
 
     @Override

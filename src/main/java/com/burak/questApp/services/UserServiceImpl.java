@@ -1,7 +1,5 @@
 package com.burak.questApp.services;
 
-import com.burak.questApp.entities.Comment;
-import com.burak.questApp.entities.Like;
 import com.burak.questApp.entities.User;
 import com.burak.questApp.repository.ICommentRepository;
 import com.burak.questApp.repository.ILikeRepository;

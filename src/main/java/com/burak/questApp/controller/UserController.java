@@ -24,8 +24,8 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    public User getUserById(@PathVariable Long userId){
-        return userService.getUserById(userId);
+    public UserResponse getUserById(@PathVariable Long userId){
+        return new UserResponse(userService.getUserById(userId));
     }
 
     @GetMapping("/activity/{userId}")

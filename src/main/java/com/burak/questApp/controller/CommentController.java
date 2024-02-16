@@ -3,6 +3,7 @@ package com.burak.questApp.controller;
 import com.burak.questApp.entities.Comment;
 import com.burak.questApp.requests.CommentCreateRequest;
 import com.burak.questApp.requests.CommentUpdateRequest;
+import com.burak.questApp.responses.CommentResponse;
 import com.burak.questApp.services.ICommentService;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,8 +19,8 @@ public class CommentController {
     }
 
     @GetMapping
-    public List<Comment> getCommentsByForeignKeys(@RequestParam(required = false) Long userId,
-                                                 @RequestParam(required = false) Long postId){
+    public List<CommentResponse> getCommentsByForeignKeys(@RequestParam(required = false) Long userId,
+                                                          @RequestParam(required = false) Long postId){
         return commentService.getCommentsByForeignKeys(userId, postId);
     }
 

@@ -3,13 +3,14 @@ package com.burak.questApp.services;
 import com.burak.questApp.entities.Comment;
 import com.burak.questApp.requests.CommentCreateRequest;
 import com.burak.questApp.requests.CommentUpdateRequest;
+import com.burak.questApp.responses.CommentResponse;
 
 import java.util.List;
 
 
 public interface ICommentService {
 
-    List<Comment> getCommentsByForeignKeys(Long userId, Long postId);
+    List<CommentResponse> getCommentsByForeignKeys(Long userId, Long postId);
 
     Comment getCommentById(Long commentId);
 
