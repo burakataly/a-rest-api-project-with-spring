@@ -5,6 +5,8 @@ import com.burak.questApp.requests.CommentCreateRequest;
 import com.burak.questApp.requests.CommentUpdateRequest;
 import com.burak.questApp.responses.CommentResponse;
 import com.burak.questApp.services.ICommentService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,19 +27,21 @@ public class CommentController {
     }
 
     @GetMapping("/{commentId}")
-    public Comment getCommentById(@PathVariable Long commentId){
-        return commentService.getCommentById(commentId);
+    public CommentResponse getCommentById(@PathVariable Long commentId){
+        return new CommentResponse(commentService.getCommentById(commentId));
     }
 
     @PostMapping
-    public Comment createComment(@RequestBody CommentCreateRequest commentCreateRequest){
-        return commentService.createComment(commentCreateRequest);
+    public ResponseEntity<Void> createComment(@RequestBody CommentCreateRequest commentCreateRequest){
+        return (commentService.createComment(commentCreateRequest) != null) ? new ResponseEntity<>(HttpStatus.CREATED) :
+                new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @PutMapping("/{commentId}")
-    public Comment updateComment(@PathVariable Long commentId,
+    public ResponseEntity<Void> updateComment(@PathVariable Long commentId,
                                  @RequestBody CommentUpdateRequest commentUpdateRequest){
-        return commentService.updateComment(commentId, commentUpdateRequest);
+        return (commentService.updateComment(commentId, commentUpdateRequest) != null) ? new ResponseEntity<>(HttpStatus.OK) :
+                new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @DeleteMapping("/{commentId}")

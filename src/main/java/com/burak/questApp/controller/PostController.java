@@ -5,6 +5,8 @@ import com.burak.questApp.requests.PostCreateRequest;
 import com.burak.questApp.requests.PostUpdateRequest;
 import com.burak.questApp.responses.PostResponse;
 import com.burak.questApp.services.IPostService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,13 +32,15 @@ public class PostController {
     }
 
     @PostMapping
-    public Post createPost(@RequestBody PostCreateRequest postCreateRequest){
-        return postService.createPost(postCreateRequest);
+    public ResponseEntity<Void> createPost(@RequestBody PostCreateRequest postCreateRequest){
+        return (postService.createPost(postCreateRequest) != null) ? new ResponseEntity<>(HttpStatus.CREATED) :
+                new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @PutMapping("/{postId}")
-    public Post updatePost(@RequestBody PostUpdateRequest postUpdateRequest, @PathVariable Long postId){
-        return postService.updatePost(postUpdateRequest, postId);
+    public ResponseEntity<Void> updatePost(@RequestBody PostUpdateRequest postUpdateRequest, @PathVariable Long postId){
+        return (postService.updatePost(postUpdateRequest, postId) != null) ? new ResponseEntity<>(HttpStatus.OK) :
+                new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @DeleteMapping("/{postId}")

@@ -7,6 +7,10 @@ import com.burak.questApp.repository.ICommentRepository;
 import com.burak.questApp.requests.CommentCreateRequest;
 import com.burak.questApp.requests.CommentUpdateRequest;
 import com.burak.questApp.responses.CommentResponse;
+import com.burak.questApp.services.ICommentService;
+import com.burak.questApp.services.IPostService;
+import com.burak.questApp.services.IUserService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -39,14 +43,14 @@ public class CommentServiceImpl implements ICommentService {
 
     @Override
     public Comment getCommentById(Long commentId) {
-        return commentRepository.findById(commentId).orElse(null);
+        return commentRepository.findById(commentId).orElseThrow(() -> new EntityNotFoundException("invalid commentId"));
     }
 
     @Override
     public Comment createComment(CommentCreateRequest commentCreateRequest) {
         User user = userService.getUserById(commentCreateRequest.getUserId());
         Post post = postService.getPostById(commentCreateRequest.getPostId());
-        if(user == null || post == null) return null;
+        if(user == null || post == null) throw new EntityNotFoundException("Invalid postId or userId");
         Comment comment = Comment.builder().
                 user(user).
                 post(post).
@@ -59,7 +63,7 @@ public class CommentServiceImpl implements ICommentService {
     @Override
     public Comment updateComment(Long commentId, CommentUpdateRequest commentUpdateRequest) {
         Optional<Comment> temp = commentRepository.findById(commentId);
-        if(temp.isEmpty()) return null;
+        if(temp.isEmpty()) throw new EntityNotFoundException("Invalid commentId");
         Comment comment = temp.get();
         comment.setText(commentUpdateRequest.getText());
         return commentRepository.save(comment);

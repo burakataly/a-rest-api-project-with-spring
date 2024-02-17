@@ -23,17 +23,14 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
     private final IUserService userService;
-    private final PasswordEncoder passwordEncoder;
     private final RefreshTokenService refreshTokenService;
 
 
     public AuthService(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider,
-                       IUserService userService, PasswordEncoder passwordEncoder,
-                       RefreshTokenService refreshTokenService) {
+                       IUserService userService, RefreshTokenService refreshTokenService) {
         this.authenticationManager = authenticationManager;
         this.jwtTokenProvider = jwtTokenProvider;
         this.userService = userService;
-        this.passwordEncoder = passwordEncoder;
         this.refreshTokenService = refreshTokenService;
     }
 
@@ -52,14 +49,14 @@ public class AuthService {
         if(userService.getUserByUsername(authRequest.getUsername()) == null){
             User user = userService.createUser(UserRequest.builder().
                     username(authRequest.getUsername()).
-                    password(passwordEncoder.encode(authRequest.getPassword()))
+                    password(authRequest.getPassword())
                     .build());
             if(doAuthenticate(authRequest)){
                 return createToken("user is successfully registered.", user);
             }
             else{
                 return new ResponseEntity<>(AuthResponse.builder().
-                        message("Invalid username or password!!!").build(), HttpStatus.UNAUTHORIZED);
+                        message("authentication is failed after registration").build(), HttpStatus.UNAUTHORIZED);
             }
         }
         else{

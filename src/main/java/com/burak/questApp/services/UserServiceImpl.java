@@ -7,7 +7,10 @@ import com.burak.questApp.repository.IPostRepository;
 import com.burak.questApp.repository.IUserRepository;
 import com.burak.questApp.requests.UserRequest;
 import com.burak.questApp.responses.UserResponse;
+import com.burak.questApp.services.IUserService;
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,13 +23,16 @@ public class UserServiceImpl implements IUserService {
     private final IPostRepository postRepository;
     private final ICommentRepository commentRepository;
     private final ILikeRepository likeRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public UserServiceImpl(IUserRepository userRepository, IPostRepository postRepository,
-                           ICommentRepository commentRepository, ILikeRepository likeRepository) {
+                           ICommentRepository commentRepository, ILikeRepository likeRepository,
+                           PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.postRepository = postRepository;
         this.commentRepository = commentRepository;
         this.likeRepository = likeRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -42,10 +48,10 @@ public class UserServiceImpl implements IUserService {
     @Override
     public User createUser(UserRequest userRequest) {
         User user = userRepository.findByUsername(userRequest.getUsername());
-        if(user != null) return null;
+        if(user != null) throw new EntityExistsException("There is already a user with this username.");
         user = User.builder().
                 username(userRequest.getUsername()).
-                password(userRequest.getPassword()).
+                password(passwordEncoder.encode(userRequest.getPassword())).
                 avatar(userRequest.getAvatar()).
                 build();
         return userRepository.save(user);
@@ -53,7 +59,7 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public User getUserById(Long userId) {
-        return userRepository.findById(userId).orElse(null);
+        return userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException("invalid userId"));
     }
 
     @Override
@@ -68,11 +74,11 @@ public class UserServiceImpl implements IUserService {
         if(temp.isPresent()){
             User foundUser = temp.get();
             foundUser.setUsername(userRequest.getUsername());
-            foundUser.setPassword(userRequest.getPassword());
+            foundUser.setPassword(passwordEncoder.encode(userRequest.getPassword()));
             foundUser.setAvatar(userRequest.getAvatar());
             return userRepository.save(foundUser);
         }
-        else return null;
+        else throw new EntityNotFoundException("Invalid userId");
     }
 
     @Override

@@ -5,6 +5,8 @@ import com.burak.questApp.entities.Like;
 import com.burak.questApp.requests.LikeCreateRequest;
 import com.burak.questApp.responses.LikeResponse;
 import com.burak.questApp.services.ILikeService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,13 +27,14 @@ public class LikeController {
     }
 
     @GetMapping("/{likeId}")
-    public Like getLikeById(@PathVariable Long likeId){
-        return likeService.getLikeById(likeId);
+    public LikeResponse getLikeById(@PathVariable Long likeId){
+        return new LikeResponse(likeService.getLikeById(likeId));
     }
 
     @PostMapping
-    public Like createLike(@RequestBody LikeCreateRequest likeCreateRequest){
-        return likeService.createLike(likeCreateRequest);
+    public ResponseEntity<Void> createLike(@RequestBody LikeCreateRequest likeCreateRequest){
+        return (likeService.createLike(likeCreateRequest) != null) ? new ResponseEntity<>(HttpStatus.CREATED) :
+                new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @DeleteMapping("/{likeId}")

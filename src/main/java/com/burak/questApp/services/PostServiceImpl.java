@@ -6,6 +6,9 @@ import com.burak.questApp.repository.IPostRepository;
 import com.burak.questApp.requests.PostCreateRequest;
 import com.burak.questApp.requests.PostUpdateRequest;
 import com.burak.questApp.responses.PostResponse;
+import com.burak.questApp.services.IPostService;
+import com.burak.questApp.services.IUserService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -37,19 +40,19 @@ public class PostServiceImpl implements IPostService {
 
     @Override
     public Post getPostById(Long postId) {
-        return postRepository.findById(postId).orElse(null);
+        return postRepository.findById(postId).orElseThrow(() -> new EntityNotFoundException("Invalid postId"));
     }
 
     @Override
     public PostResponse getPostByIdWithLikes(Long postId) {
-        Post post = postRepository.findById(postId).orElse(null);
-        return (post != null) ? new PostResponse(post) : null;
+        Post post = postRepository.findById(postId).orElseThrow(() -> new EntityNotFoundException("Invalid postId"));
+        return new PostResponse(post);
     }
 
     @Override
     public Post createPost(PostCreateRequest postCreateRequest) {
         User user = userService.getUserById(postCreateRequest.getUserId());
-        if(user == null) return null;
+        if(user == null) throw new EntityNotFoundException("Invalid userId");
         Post post = Post.builder().
                 text(postCreateRequest.getText()).
                 title(postCreateRequest.getTitle()).
@@ -62,7 +65,7 @@ public class PostServiceImpl implements IPostService {
     @Override
     public Post updatePost(PostUpdateRequest postUpdateRequest, Long postId) {
         Optional<Post> temp = postRepository.findById(postId);
-        if(temp.isEmpty()) return null;
+        if(temp.isEmpty()) throw new EntityNotFoundException("Invalid postId");
         Post foundPost = temp.get();
         foundPost.setText(postUpdateRequest.getText());
         foundPost.setTitle(postUpdateRequest.getTitle());

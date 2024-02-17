@@ -6,6 +6,10 @@ import com.burak.questApp.entities.User;
 import com.burak.questApp.repository.ILikeRepository;
 import com.burak.questApp.requests.LikeCreateRequest;
 import com.burak.questApp.responses.LikeResponse;
+import com.burak.questApp.services.ILikeService;
+import com.burak.questApp.services.IPostService;
+import com.burak.questApp.services.IUserService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -36,14 +40,14 @@ public class LikeServiceImpl implements ILikeService {
 
     @Override
     public Like getLikeById(Long likeId) {
-        return likeRepository.findById(likeId).orElse(null);
+        return likeRepository.findById(likeId).orElseThrow(() -> new EntityNotFoundException("invalid likeId"));
     }
 
     @Override
     public Like createLike(LikeCreateRequest likeCreateRequest) {
         User user = userService.getUserById(likeCreateRequest.getUserId());
         Post post = postService.getPostById(likeCreateRequest.getPostId());
-        if(user == null || post == null) return null;
+        if(user == null || post == null) throw new EntityNotFoundException("Invalid postId or userId");
         Like like = Like.builder().
                 user(user).
                 post(post).
