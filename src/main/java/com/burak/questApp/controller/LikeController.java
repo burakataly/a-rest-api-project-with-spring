@@ -12,7 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/likes")
 public class LikeController {
-    private ILikeService likeService;
+    private final ILikeService likeService;
 
     public LikeController(ILikeService likeService) {
         this.likeService = likeService;

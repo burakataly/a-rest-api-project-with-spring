@@ -16,9 +16,9 @@ import java.util.Optional;
 
 @Service
 public class CommentServiceImpl implements ICommentService {
-    private ICommentRepository commentRepository;
-    private IUserService userService;
-    private IPostService postService;
+    private final ICommentRepository commentRepository;
+    private final IUserService userService;
+    private final IPostService postService;
 
     public CommentServiceImpl(ICommentRepository commentRepository, IUserService userService,
                               IPostService postService) {

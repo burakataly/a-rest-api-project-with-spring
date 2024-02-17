@@ -14,9 +14,9 @@ import java.util.List;
 
 @Service
 public class LikeServiceImpl implements ILikeService {
-    private ILikeRepository likeRepository;
-    private IUserService userService;
-    private IPostService postService;
+    private final ILikeRepository likeRepository;
+    private final IUserService userService;
+    private final IPostService postService;
 
     public LikeServiceImpl(ILikeRepository likeRepository, IUserService userService, IPostService postService) {
         this.likeRepository = likeRepository;

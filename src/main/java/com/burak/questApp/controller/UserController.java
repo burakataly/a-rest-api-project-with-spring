@@ -12,7 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "/users")
 public class UserController {
-    private IUserService userService;
+    private final IUserService userService;
 
     public UserController(IUserService userService) {
         this.userService = userService;

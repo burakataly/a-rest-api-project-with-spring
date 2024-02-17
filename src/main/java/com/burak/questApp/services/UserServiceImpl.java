@@ -16,10 +16,10 @@ import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements IUserService {
-    private IUserRepository userRepository;
-    private IPostRepository postRepository;
-    private ICommentRepository commentRepository;
-    private ILikeRepository likeRepository;
+    private final IUserRepository userRepository;
+    private final IPostRepository postRepository;
+    private final ICommentRepository commentRepository;
+    private final ILikeRepository likeRepository;
 
     public UserServiceImpl(IUserRepository userRepository, IPostRepository postRepository,
                            ICommentRepository commentRepository, ILikeRepository likeRepository) {
@@ -53,7 +53,7 @@ public class UserServiceImpl implements IUserService {
 
     @Override
     public User getUserById(Long userId) {
-        return userRepository.findById(userId).orElseThrow(EntityNotFoundException::new);
+        return userRepository.findById(userId).orElse(null);
     }
 
     @Override

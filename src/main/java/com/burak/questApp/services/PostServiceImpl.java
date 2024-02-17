@@ -15,8 +15,8 @@ import java.util.Optional;
 
 @Service
 public class PostServiceImpl implements IPostService {
-    private IPostRepository postRepository;
-    private IUserService userService;
+    private final IPostRepository postRepository;
+    private final IUserService userService;
 
     public PostServiceImpl(IPostRepository postRepository, IUserService userService) {
         this.postRepository = postRepository;

@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
-    private IUserRepository userRepository;
+    private final IUserRepository userRepository;
 
     public UserDetailsServiceImpl(IUserRepository userRepository) {
         this.userRepository = userRepository;
@@ -21,6 +21,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
+        if(user == null) throw new UsernameNotFoundException("Invalid username");
         return JwtUserDetails.createJwtUserDetails(user);
     }
 

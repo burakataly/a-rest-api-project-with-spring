@@ -12,7 +12,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/comments")
 public class CommentController {
-    private ICommentService commentService;
+    private final ICommentService commentService;
 
     public CommentController(ICommentService commentService) {
         this.commentService = commentService;

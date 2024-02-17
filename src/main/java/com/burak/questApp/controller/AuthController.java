@@ -1,5 +1,6 @@
 package com.burak.questApp.controller;
 
+import com.burak.questApp.requests.AuthRequest;
 import com.burak.questApp.requests.RefreshTokenRequest;
 import com.burak.questApp.requests.UserRequest;
 import com.burak.questApp.responses.AuthResponse;
@@ -10,19 +11,19 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
-    private AuthService authService;
+    private final AuthService authService;
     public AuthController(AuthService authService) {
         this.authService = authService;
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody UserRequest userRequest){
-        return authService.login(userRequest);
+    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest authRequest){
+        return authService.login(authRequest);
     }
 
     @PostMapping("/register")
-    public ResponseEntity<AuthResponse> register(@RequestBody UserRequest userRequest){
-        return authService.register(userRequest);
+    public ResponseEntity<AuthResponse> register(@RequestBody AuthRequest authRequest){
+        return authService.register(authRequest);
     }
 
     @PostMapping("/refresh")

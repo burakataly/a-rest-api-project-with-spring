@@ -1,15 +1,12 @@
 package com.burak.questApp.security;
 
-import com.burak.questApp.security.JwtAuthenticationEntryPoint;
-import com.burak.questApp.security.JwtAuthenticationFilter;
-import com.burak.questApp.security.JwtTokenProvider;
+
 import com.burak.questApp.services.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
-import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -19,7 +16,6 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -29,9 +25,9 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-    private JwtAuthenticationFilter jwtAuthenticationFilter;
-    private UserDetailsServiceImpl userService;
-    private JwtAuthenticationEntryPoint authenticationEntryPoint;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final UserDetailsServiceImpl userService;
+    private final JwtAuthenticationEntryPoint authenticationEntryPoint;
 
     public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, UserDetailsServiceImpl userService,
                           JwtAuthenticationEntryPoint authenticationEntryPoint) {
@@ -79,14 +75,14 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity security) throws Exception {
         return security.csrf(AbstractHttpConfigurer::disable).
-                exceptionHandling(Customizer.withDefaults()).
+                exceptionHandling(exception -> exception.authenticationEntryPoint(authenticationEntryPoint)).
                 sessionManagement(x -> x.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).
                 authorizeHttpRequests(x ->
                         x.requestMatchers(HttpMethod.GET,"/posts").permitAll().
                                 requestMatchers(HttpMethod.GET, "/comments").permitAll().
                                 requestMatchers("/auth/**").permitAll().
                                 anyRequest().authenticated()
-                ).exceptionHandling(exception -> exception.authenticationEntryPoint(authenticationEntryPoint)).
+                ).
                 authenticationProvider(authenticationProvider()).
                 addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class).
                 build();

@@ -13,7 +13,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/posts")
 public class PostController {
-    private IPostService postService;
+    private final IPostService postService;
 
     public PostController(IPostService postService) {
         this.postService = postService;

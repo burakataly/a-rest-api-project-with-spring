@@ -2,6 +2,7 @@ package com.burak.questApp.services;
 
 import com.burak.questApp.entities.RefreshToken;
 import com.burak.questApp.entities.User;
+import com.burak.questApp.requests.AuthRequest;
 import com.burak.questApp.requests.RefreshTokenRequest;
 import com.burak.questApp.requests.UserRequest;
 import com.burak.questApp.responses.AuthResponse;
@@ -9,19 +10,21 @@ import com.burak.questApp.security.JwtTokenProvider;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AuthService {
-    private AuthenticationManager authenticationManager;
-    private JwtTokenProvider jwtTokenProvider;
-    private IUserService userService;
-    private PasswordEncoder passwordEncoder;
-    private RefreshTokenService refreshTokenService;
+    private final AuthenticationManager authenticationManager;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final IUserService userService;
+    private final PasswordEncoder passwordEncoder;
+    private final RefreshTokenService refreshTokenService;
 
 
     public AuthService(AuthenticationManager authenticationManager, JwtTokenProvider jwtTokenProvider,
@@ -34,58 +37,72 @@ public class AuthService {
         this.refreshTokenService = refreshTokenService;
     }
 
-    public ResponseEntity<AuthResponse> login(UserRequest userRequest) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(userRequest.getUsername(), userRequest.getPassword()));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        return createToken("user is successfully logged in.",
-                userService.getUserByUsername(userRequest.getUsername()));
-    }
-
-    public ResponseEntity<AuthResponse> register(UserRequest userRequest){
-        if(userService.getUserByUsername(userRequest.getUsername()) == null){
-            userRequest.setPassword(passwordEncoder.encode(userRequest.getPassword()));
-            User user = userService.createUser(userRequest);
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(userRequest.getUsername(), userRequest.getPassword()));
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            return createToken("user is successfully registered.", user);
+    public ResponseEntity<AuthResponse> login(AuthRequest authRequest) {
+        if(doAuthenticate(authRequest)){
+            return createToken("user is successfully logged in.",
+                    userService.getUserByUsername(authRequest.getUsername()));
         }
         else{
-            AuthResponse authResponse = new AuthResponse();
-            authResponse.setMessage("there is already a user with this username.");
-            return new ResponseEntity<>(authResponse, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(AuthResponse.builder().
+                    message("Invalid username or password!!!").build(), HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    public ResponseEntity<AuthResponse> register(AuthRequest authRequest){
+        if(userService.getUserByUsername(authRequest.getUsername()) == null){
+            User user = userService.createUser(UserRequest.builder().
+                    username(authRequest.getUsername()).
+                    password(passwordEncoder.encode(authRequest.getPassword()))
+                    .build());
+            if(doAuthenticate(authRequest)){
+                return createToken("user is successfully registered.", user);
+            }
+            else{
+                return new ResponseEntity<>(AuthResponse.builder().
+                        message("Invalid username or password!!!").build(), HttpStatus.UNAUTHORIZED);
+            }
+        }
+        else{
+            return new ResponseEntity<>(AuthResponse.builder().
+                    message("there is already a user with this username.").build(), HttpStatus.BAD_REQUEST);
         }
     }
 
     public ResponseEntity<AuthResponse> refresh(RefreshTokenRequest refreshTokenRequest) {
         User user = userService.getUserById(refreshTokenRequest.getUserId());
         if(user == null){
-            AuthResponse authResponse = new AuthResponse();
-            authResponse.setMessage("there is not a user with this userId.");
-            return new ResponseEntity<>(authResponse, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(AuthResponse.builder().
+                    message("there is not a user with this userId.").build(), HttpStatus.BAD_REQUEST);
         }
         RefreshToken token = refreshTokenService.findByUserId(user.getId());
         if(token == null){
-            AuthResponse authResponse = new AuthResponse();
-            authResponse.setMessage("there is not a refresh token of this user.");
-            return new ResponseEntity<>(authResponse, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(AuthResponse.builder().
+                    message("there is not a refresh token of this user.").build(), HttpStatus.BAD_REQUEST);
         }
         if(token.getToken().equals(refreshTokenRequest.getRefreshToken()) && !refreshTokenService.isTokenExpired(token)){
             return createToken("Token is successfully refreshed.", user);
         }else{
-            AuthResponse authResponse = new AuthResponse();
-            authResponse.setMessage("Refresh token is not valid.");
-            return new ResponseEntity<>(authResponse, HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(AuthResponse.builder().
+                    message("Refresh token is not valid.").build(), HttpStatus.UNAUTHORIZED);
         }
     }
 
     private ResponseEntity<AuthResponse> createToken(String message, User user){
-        AuthResponse authResponse = new AuthResponse();
-        authResponse.setAccessToken("Bearer " + jwtTokenProvider.generateToken(user.getUsername()));
-        authResponse.setRefreshToken(refreshTokenService.createRefreshToken(user));
-        authResponse.setUserId(user.getId());
-        authResponse.setMessage(message);
-        return new ResponseEntity<>(authResponse, HttpStatus.CREATED);
+        return new ResponseEntity<>(AuthResponse.builder().
+                accessToken("Bearer " + jwtTokenProvider.generateToken(user.getUsername())).
+                refreshToken(refreshTokenService.createRefreshToken(user)).
+                userId(user.getId()).
+                message(message).build(), HttpStatus.CREATED);
+    }
+
+    private Boolean doAuthenticate(AuthRequest authRequest) {
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword()));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            return true;
+        } catch (BadCredentialsException | UsernameNotFoundException e) {
+            return false;
+        }
     }
 }
