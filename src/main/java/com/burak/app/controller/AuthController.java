@@ -2,7 +2,7 @@ package com.burak.questApp.controller;
 
 import com.burak.questApp.requests.AuthRequest;
 import com.burak.questApp.requests.RefreshTokenRequest;
-import com.burak.questApp.requests.UserRequest;
+
 import com.burak.questApp.responses.AuthResponse;
 import com.burak.questApp.services.AuthService;
 import org.springframework.http.ResponseEntity;
