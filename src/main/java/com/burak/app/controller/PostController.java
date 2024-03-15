@@ -1,10 +1,9 @@
-package com.burak.questApp.controller;
+package com.burak.app.controller;
 
-import com.burak.questApp.entities.Post;
-import com.burak.questApp.requests.PostCreateRequest;
-import com.burak.questApp.requests.PostUpdateRequest;
-import com.burak.questApp.responses.PostResponse;
-import com.burak.questApp.services.IPostService;
+import com.burak.app.requests.PostCreateRequest;
+import com.burak.app.requests.PostUpdateRequest;
+import com.burak.app.responses.PostResponse;
+import com.burak.app.services.IPostService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

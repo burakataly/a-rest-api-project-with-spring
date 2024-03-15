@@ -1,15 +1,11 @@
-package com.burak.questApp.controller;
+package com.burak.app.controller;
 
-import com.burak.questApp.entities.Comment;
-import com.burak.questApp.entities.User;
-import com.burak.questApp.requests.UserRequest;
-import com.burak.questApp.responses.UserResponse;
-import com.burak.questApp.services.IUserService;
+import com.burak.app.requests.UserRequest;
+import com.burak.app.responses.UserResponse;
+import com.burak.app.services.IUserService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.function.ServerResponse;
 
 import java.util.List;
 

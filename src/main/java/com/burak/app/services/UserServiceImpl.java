@@ -1,13 +1,12 @@
-package com.burak.questApp.services;
+package com.burak.app.services;
 
-import com.burak.questApp.entities.User;
-import com.burak.questApp.repository.ICommentRepository;
-import com.burak.questApp.repository.ILikeRepository;
-import com.burak.questApp.repository.IPostRepository;
-import com.burak.questApp.repository.IUserRepository;
-import com.burak.questApp.requests.UserRequest;
-import com.burak.questApp.responses.UserResponse;
-import com.burak.questApp.services.IUserService;
+import com.burak.app.entities.User;
+import com.burak.app.repository.ICommentRepository;
+import com.burak.app.repository.ILikeRepository;
+import com.burak.app.repository.IPostRepository;
+import com.burak.app.repository.IUserRepository;
+import com.burak.app.requests.UserRequest;
+import com.burak.app.responses.UserResponse;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;

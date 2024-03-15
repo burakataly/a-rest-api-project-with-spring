@@ -1,6 +1,6 @@
-package com.burak.questApp.repository;
+package com.burak.app.repository;
 
-import com.burak.questApp.entities.Comment;
+import com.burak.app.entities.Comment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

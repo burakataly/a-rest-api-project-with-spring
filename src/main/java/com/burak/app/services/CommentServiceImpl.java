@@ -1,15 +1,12 @@
-package com.burak.questApp.services;
+package com.burak.app.services;
 
-import com.burak.questApp.entities.Comment;
-import com.burak.questApp.entities.Post;
-import com.burak.questApp.entities.User;
-import com.burak.questApp.repository.ICommentRepository;
-import com.burak.questApp.requests.CommentCreateRequest;
-import com.burak.questApp.requests.CommentUpdateRequest;
-import com.burak.questApp.responses.CommentResponse;
-import com.burak.questApp.services.ICommentService;
-import com.burak.questApp.services.IPostService;
-import com.burak.questApp.services.IUserService;
+import com.burak.app.entities.Comment;
+import com.burak.app.entities.Post;
+import com.burak.app.entities.User;
+import com.burak.app.repository.ICommentRepository;
+import com.burak.app.requests.CommentCreateRequest;
+import com.burak.app.requests.CommentUpdateRequest;
+import com.burak.app.responses.CommentResponse;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 

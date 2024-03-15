@@ -1,9 +1,8 @@
-package com.burak.questApp.services;
+package com.burak.app.services;
 
-import com.burak.questApp.entities.User;
-import com.burak.questApp.requests.UserRequest;
-import com.burak.questApp.responses.UserResponse;
-import org.springframework.http.ResponseEntity;
+import com.burak.app.entities.User;
+import com.burak.app.requests.UserRequest;
+import com.burak.app.responses.UserResponse;
 
 import java.util.List;
 

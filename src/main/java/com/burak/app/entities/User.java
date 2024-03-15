@@ -1,4 +1,4 @@
-package com.burak.questApp.entities;
+package com.burak.app.entities;
 
 import jakarta.persistence.*;
 import lombok.*;

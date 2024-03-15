@@ -1,13 +1,11 @@
-package com.burak.questApp.services;
+package com.burak.app.services;
 
-import com.burak.questApp.entities.Post;
-import com.burak.questApp.entities.User;
-import com.burak.questApp.repository.IPostRepository;
-import com.burak.questApp.requests.PostCreateRequest;
-import com.burak.questApp.requests.PostUpdateRequest;
-import com.burak.questApp.responses.PostResponse;
-import com.burak.questApp.services.IPostService;
-import com.burak.questApp.services.IUserService;
+import com.burak.app.entities.Post;
+import com.burak.app.entities.User;
+import com.burak.app.repository.IPostRepository;
+import com.burak.app.requests.PostCreateRequest;
+import com.burak.app.requests.PostUpdateRequest;
+import com.burak.app.responses.PostResponse;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 

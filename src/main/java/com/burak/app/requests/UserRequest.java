@@ -1,4 +1,4 @@
-package com.burak.questApp.requests;
+package com.burak.app.requests;
 
 import lombok.Builder;
 import lombok.Data;

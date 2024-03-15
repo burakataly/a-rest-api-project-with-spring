@@ -1,10 +1,10 @@
-package com.burak.questApp.controller;
+package com.burak.app.controller;
 
-import com.burak.questApp.requests.AuthRequest;
-import com.burak.questApp.requests.RefreshTokenRequest;
+import com.burak.app.requests.AuthRequest;
+import com.burak.app.requests.RefreshTokenRequest;
 
-import com.burak.questApp.responses.AuthResponse;
-import com.burak.questApp.services.AuthService;
+import com.burak.app.responses.AuthResponse;
+import com.burak.app.services.AuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

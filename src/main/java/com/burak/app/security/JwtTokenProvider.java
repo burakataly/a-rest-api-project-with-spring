@@ -1,4 +1,4 @@
-package com.burak.questApp.security;
+package com.burak.app.security;
 
 
 import io.jsonwebtoken.*;

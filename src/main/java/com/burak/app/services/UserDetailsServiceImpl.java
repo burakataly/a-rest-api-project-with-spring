@@ -1,8 +1,8 @@
-package com.burak.questApp.services;
+package com.burak.app.services;
 
-import com.burak.questApp.entities.User;
-import com.burak.questApp.repository.IUserRepository;
-import com.burak.questApp.security.JwtUserDetails;
+import com.burak.app.entities.User;
+import com.burak.app.repository.IUserRepository;
+import com.burak.app.security.JwtUserDetails;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

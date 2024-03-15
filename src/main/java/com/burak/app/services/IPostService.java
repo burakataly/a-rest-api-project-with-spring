@@ -1,10 +1,10 @@
-package com.burak.questApp.services;
+package com.burak.app.services;
 
-import com.burak.questApp.entities.Post;
+import com.burak.app.entities.Post;
 
-import com.burak.questApp.requests.PostCreateRequest;
-import com.burak.questApp.requests.PostUpdateRequest;
-import com.burak.questApp.responses.PostResponse;
+import com.burak.app.requests.PostCreateRequest;
+import com.burak.app.requests.PostUpdateRequest;
+import com.burak.app.responses.PostResponse;
 
 import java.util.List;
 import java.util.Optional;

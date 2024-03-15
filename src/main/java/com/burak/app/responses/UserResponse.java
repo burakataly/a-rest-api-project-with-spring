@@ -1,5 +1,5 @@
-package com.burak.questApp.responses;
-import com.burak.questApp.entities.User;
+package com.burak.app.responses;
+import com.burak.app.entities.User;
 import lombok.Data;
 
 @Data

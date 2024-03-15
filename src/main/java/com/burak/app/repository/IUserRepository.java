@@ -1,6 +1,6 @@
-package com.burak.questApp.repository;
+package com.burak.app.repository;
 
-import com.burak.questApp.entities.User;
+import com.burak.app.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 

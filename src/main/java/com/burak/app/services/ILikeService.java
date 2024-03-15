@@ -1,8 +1,8 @@
-package com.burak.questApp.services;
+package com.burak.app.services;
 
-import com.burak.questApp.entities.Like;
-import com.burak.questApp.requests.LikeCreateRequest;
-import com.burak.questApp.responses.LikeResponse;
+import com.burak.app.entities.Like;
+import com.burak.app.requests.LikeCreateRequest;
+import com.burak.app.responses.LikeResponse;
 
 import java.util.List;
 

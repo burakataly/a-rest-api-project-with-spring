@@ -1,10 +1,9 @@
-package com.burak.questApp.controller;
+package com.burak.app.controller;
 
 
-import com.burak.questApp.entities.Like;
-import com.burak.questApp.requests.LikeCreateRequest;
-import com.burak.questApp.responses.LikeResponse;
-import com.burak.questApp.services.ILikeService;
+import com.burak.app.requests.LikeCreateRequest;
+import com.burak.app.responses.LikeResponse;
+import com.burak.app.services.ILikeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

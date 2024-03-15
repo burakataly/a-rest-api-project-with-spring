@@ -1,6 +1,6 @@
-package com.burak.questApp.responses;
+package com.burak.app.responses;
 
-import com.burak.questApp.entities.Post;
+import com.burak.app.entities.Post;
 import lombok.Data;
 
 import java.util.Date;

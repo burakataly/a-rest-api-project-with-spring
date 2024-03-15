@@ -1,8 +1,8 @@
-package com.burak.questApp.services;
+package com.burak.app.services;
 
-import com.burak.questApp.entities.RefreshToken;
-import com.burak.questApp.entities.User;
-import com.burak.questApp.repository.IRefreshTokenRepository;
+import com.burak.app.entities.RefreshToken;
+import com.burak.app.entities.User;
+import com.burak.app.repository.IRefreshTokenRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 

@@ -1,10 +1,10 @@
-package com.burak.questApp;
+package com.burak.app;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class QuestAppApplicationTests {
+class ApplicationTests {
 
 	@Test
 	void contextLoads() {

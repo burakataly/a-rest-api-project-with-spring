@@ -1,9 +1,9 @@
-package com.burak.questApp.services;
+package com.burak.app.services;
 
-import com.burak.questApp.entities.Comment;
-import com.burak.questApp.requests.CommentCreateRequest;
-import com.burak.questApp.requests.CommentUpdateRequest;
-import com.burak.questApp.responses.CommentResponse;
+import com.burak.app.entities.Comment;
+import com.burak.app.requests.CommentCreateRequest;
+import com.burak.app.requests.CommentUpdateRequest;
+import com.burak.app.responses.CommentResponse;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
-package com.burak.questApp.security;
+package com.burak.app.security;
 
-import com.burak.questApp.entities.User;
+import com.burak.app.entities.User;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;

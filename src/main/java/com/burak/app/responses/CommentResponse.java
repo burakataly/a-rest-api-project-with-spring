@@ -1,6 +1,6 @@
-package com.burak.questApp.responses;
+package com.burak.app.responses;
 
-import com.burak.questApp.entities.Comment;
+import com.burak.app.entities.Comment;
 import lombok.Data;
 @Data
 public class CommentResponse {

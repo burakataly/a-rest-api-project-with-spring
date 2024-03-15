@@ -1,6 +1,6 @@
-package com.burak.questApp.responses;
+package com.burak.app.responses;
 
-import com.burak.questApp.entities.Like;
+import com.burak.app.entities.Like;
 import lombok.Data;
 
 @Data

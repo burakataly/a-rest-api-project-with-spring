@@ -1,10 +1,9 @@
-package com.burak.questApp.controller;
+package com.burak.app.controller;
 
-import com.burak.questApp.entities.Comment;
-import com.burak.questApp.requests.CommentCreateRequest;
-import com.burak.questApp.requests.CommentUpdateRequest;
-import com.burak.questApp.responses.CommentResponse;
-import com.burak.questApp.services.ICommentService;
+import com.burak.app.requests.CommentCreateRequest;
+import com.burak.app.requests.CommentUpdateRequest;
+import com.burak.app.responses.CommentResponse;
+import com.burak.app.services.ICommentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

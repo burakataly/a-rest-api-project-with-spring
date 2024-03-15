@@ -1,4 +1,4 @@
-package com.burak.questApp.exceptions;
+package com.burak.app.exceptions;
 
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;

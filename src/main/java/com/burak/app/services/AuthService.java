@@ -1,12 +1,12 @@
-package com.burak.questApp.services;
+package com.burak.app.services;
 
-import com.burak.questApp.entities.RefreshToken;
-import com.burak.questApp.entities.User;
-import com.burak.questApp.requests.AuthRequest;
-import com.burak.questApp.requests.RefreshTokenRequest;
-import com.burak.questApp.requests.UserRequest;
-import com.burak.questApp.responses.AuthResponse;
-import com.burak.questApp.security.JwtTokenProvider;
+import com.burak.app.entities.RefreshToken;
+import com.burak.app.entities.User;
+import com.burak.app.requests.AuthRequest;
+import com.burak.app.requests.RefreshTokenRequest;
+import com.burak.app.requests.UserRequest;
+import com.burak.app.responses.AuthResponse;
+import com.burak.app.security.JwtTokenProvider;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,7 +15,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
